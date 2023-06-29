@@ -1842,6 +1842,7 @@ CREATE TABLE sales (
 PARTITION BY RANGE (sale_date);
 
 ```
+**In addition, the partitioning column must be included in the table's primary key.** 
 
 This creates a table called  `sales`  with a  `sale_date`  column as the partition key, partitioned by range. We can then create partitions for specific  date ranges  using the  `CREATE TABLE`  statement with the  `PARTITION OF`  clause:
 
