@@ -2092,3 +2092,88 @@ It's important to carefully consider which columns to index and which type of in
 
 -   Full outer join: This type of join returns all rows from both tables, so an index may not be able to reduce the number of rows that need to be scanned.
 -   Cartesian product: This type of join returns all possible combinations of rows from both tables, so an index may not be able to reduce the number of rows that need to be scanned.
+
+# ACID Properties in PostgreSQL
+
+ACID is an acronym that stands for  Atomicity,  Consistency,  Isolation, and Durability. These properties are essential for ensuring the reliability, correctness, and durability of database transactions. PostgreSQL is an ACID-compliant  database management system, which means that it provides mechanisms to ensure that transactions meet these properties. In this guide, we will cover the following topics related to ACID properties in PostgreSQL:
+
+-   Atomicity
+-   Consistency
+-   Isolation
+-   Durability
+
+## Atomicity
+
+Atomicity is the property of a transaction that ensures that it is treated as a single, indivisible unit of work. This means that either all of the operations in the transaction are completed successfully, or none of them are. If a transaction is interrupted or encounters an error, the entire transaction is rolled back to its original state, and none of the changes made by the transaction are committed to the database. PostgreSQL ensures atomicity by using a write-ahead logging (WAL) mechanism, which records all changes made by a transaction before they are committed to the database.
+
+## Consistency
+
+Consistency is the property of a transaction that ensures that the database remains in a consistent state before and after the transaction. This means that the transaction must adhere to any constraints or rules defined in the database schema. PostgreSQL ensures consistency by enforcing constraints, such as primary key and  foreign key constraints, and by providing mechanisms for maintaining  referential integrity  and data integrity.
+
+## Isolation
+
+Isolation is the property of a transaction that ensures that it is executed in isolation from other transactions. This means that the changes made by a transaction are not visible to other transactions until the transaction is committed. PostgreSQL provides four isolation levels, as described in the previous section, to control the visibility of data modifications made by other transactions.
+
+## Durability
+
+Durability is the property of a transaction that ensures that once it is committed, its changes are permanent and will survive any failures, such as power outages or hardware failures. PostgreSQL ensures durability by using a  WAL mechanism, which writes all changes to a  log file  before they are committed to the database. This log file can be used to recover the database in the event of a failure.
+
+In addition to these properties, PostgreSQL also provides features such as  transaction savepoints, which allow for  nested transactions, and two-phase commit, which allows for distributed transactions across multiple databases.
+
+It's important to understand the ACID properties and how they are enforced in PostgreSQL to ensure the reliability and consistency of your application's data.
+
+# Conflicts in PostgreSQL
+
+Conflicts can occur in PostgreSQL when multiple transactions try to modify the same data concurrently. PostgreSQL provides several mechanisms to handle conflicts, including  concurrency control,  transaction isolation levels, and conflict resolution strategies. In this guide, we will cover the following topics related to conflicts in PostgreSQL:
+
+-   Concurrency control
+-   Transaction isolation levels
+-   Conflict resolution strategies
+-   Handling conflicts in application code
+
+## Concurrency  control
+
+Concurrency control is the process of managing access to  shared resources  in a database system to ensure that transactions execute correctly and consistently. PostgreSQL uses a multi-version concurrency control (MVCC) mechanism to provide concurrent access to data.
+
+In MVCC, each transaction sees a snapshot of the database at a specific point in time, which is determined by the transaction's start time. This allows multiple transactions to execute concurrently without interfering with each other. When a transaction modifies data, it creates a new version of the data that is visible only to that transaction until it is committed. Other transactions see the previous version of the data until the modifying transaction commits, at which point the new version becomes visible to all.
+
+## Transaction isolation  levels
+
+Transaction isolation levels determine how  concurrent transactions  interact with each other by controlling the visibility of  data modifications  made by other transactions. PostgreSQL supports four isolation levels:
+
+-   **Read uncommitted**: This level allows a transaction to see modifications made by other transactions before they are committed, which can lead to inconsistent data.
+    
+-   **Read committed**: This level allows a transaction to see modifications made by other transactions after they are committed. This is the  default isolation level  in PostgreSQL.
+    
+-   **Repeatable read**: This level ensures that a transaction sees a consistent snapshot of the database throughout its execution, even if other transactions modify the data.
+    
+-   **Serializable**: This level provides the highest level of isolation by ensuring that transactions see a consistent snapshot of the database and that concurrent transactions do not interfere with each other.
+    
+
+## Conflict resolution strategies
+
+Conflicts can occur when multiple transactions try to modify the same data concurrently. PostgreSQL provides several  conflict resolution strategies  to handle these conflicts:
+
+-   **Locking**: Locking can be used to prevent concurrent access to data by other transactions. PostgreSQL supports several types of locks, including row-level locks and table-level locks.
+    
+-   **Rollback**: When a conflict occurs, one or more transactions can be rolled back to their previous state to resolve the conflict.
+    
+-   **Retry**: In some cases, a transaction can be retried after a conflict occurs to see if the conflict still exists.
+    
+-   **Manual conflict resolution**: In some cases, conflicts may need to be resolved manually by an administrator or developer.
+    
+
+## Handling conflicts in application code
+
+Handling conflicts in  application code  is important to ensure that data remains consistent and correct. Some strategies for handling conflicts in application code include:
+
+-   **Optimistic  locking**: This strategy involves checking whether the data being modified has been modified by another transaction since it was last read. If so, the transaction can be aborted to prevent conflicts.
+    
+-   **Pessimistic locking**: This strategy involves acquiring locks on data before modifying it to prevent other transactions from modifying it concurrently.
+    
+-   **Retry**: In some cases, conflicts can be resolved by retrying a transaction after a short delay.
+    
+-   **Manual conflict resolution**: In some cases, conflicts may need to be resolved manually by an administrator or developer.
+    
+
+It's important to carefully consider the specific needs and requirements of your application when choosing a  conflict resolution  strategy.
